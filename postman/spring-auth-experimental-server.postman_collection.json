@@ -1,0 +1,166 @@
+{
+	"info": {
+		"_postman_id": "e307f75b-88a4-4d1e-84da-83dd46cdd5fd",
+		"name": "spring-auth-experimental-server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4152830"
+	},
+	"item": [
+		{
+			"name": "client-auth",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "secret",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "client",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9000/oauth2/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"oauth2",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "resource-server",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJraWQiOiJkMzQ0YjA4ZC1iMjQzLTRhMmYtYjYzNy1hMTAxYWE4ODRhOWQiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJib2IiLCJhdWQiOiJjbGllbnQiLCJuYmYiOjE2MzkxMDcxODgsImlzcyI6Imh0dHA6XC9cL2xvY2FsaG9zdDo5MDAwIiwiZXhwIjoxNjM5MTA3NDg4LCJpYXQiOjE2MzkxMDcxODgsImp0aSI6IjY2Mzc3MGMxLTljYjgtNDE1OC05ZjkwLTZjYjQxZjZmNjFjNSJ9.vJtvicUY1qipAspDwagMzGPkkucxfub4Jq4BGLSCXqAVXuERP7iqcj-0-vfd9g8qomav9cxKRbxp9X2wiVFNDnzbJDcy2osT-1eKWeGr3tc0lfWajUiJ_letK2Fg0p4YvqV6bdKkM1ByJYo3pZc16etR9mCyRXvjuwQCpS1mOCzrd39hUitTFZM-hZ-KmSHIMYqoVxOsrNAgYCA_G0tpBHyWUjy75bkXZtFiiuHDfz6sC6kSKHRDDT_AGpkglWkliun49IFjurZeq9LhU5N9yEMpq3pVx8Nd_rJr2XsqntTlT8OOXutw0hOPy5iGs-rPcKidqjYcqaZHTrfnelq81w",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/demo/only",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"demo",
+						"only"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user/client-auth",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "secret",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "client",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "authorization_code",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "client",
+							"type": "text"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost:8080/authorized",
+							"type": "text"
+						},
+						{
+							"key": "code",
+							"value": "iRJZZI-qoGw84CEqR1UPOxMyrumnbjKNShUbti0kBtkxp9D3Kq-od0FSrbxBcptF44FzUHQTMI-yeYU24C3OuSDeOt7GOb3OtYvTnzVIHjh1A80uN4GIC0JvstkPSir5",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "secret",
+							"type": "text"
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9000/oauth2/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"oauth2",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
