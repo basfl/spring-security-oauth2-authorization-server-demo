@@ -20,7 +20,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistration;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -43,19 +48,16 @@ public class ProjectConfig {
 
 	@Bean
 	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-		http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated()).formLogin();
+		http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated()).formLogin()
+				.loginPage("/login").permitAll();
 
 		return http.build();
 	}
-
-	
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return NoOpPasswordEncoder.getInstance();
 	}
-
-
 
 	@Bean
 	public JWKSource<SecurityContext> jwkSource() {
