@@ -1,6 +1,9 @@
 package com.services;
 
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,8 +35,10 @@ public class MyUserDetailsService implements UserDetailsService {
 		authority.forEach(auth->{
 			System.out.println("authority->"+auth.getAuthority());
 		});
+		Set<GrantedAuthority> aus = authority.stream().collect(Collectors.toSet());
+		user.setAuthorities(aus);
 		//return new User("user1", "password", authority);
-		return new User(user.getUserName(), user.getPassWord(), authority);
+		return new User(user.getUserName(), user.getPassWord(),true,true,true,true, user.getAuthorities());
 		
 		
 

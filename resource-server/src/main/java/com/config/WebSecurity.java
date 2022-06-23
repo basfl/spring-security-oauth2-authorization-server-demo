@@ -1,39 +1,31 @@
 package com.config;
-import javax.print.attribute.HashPrintServiceAttributeSet;
-
-import org.springframework.http.HttpMethod;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.web.SecurityFilterChain;
+
+
+
 
 
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 
-//@EnableWebSecurity
-public class WebSecurity extends WebSecurityConfigurerAdapter {
+public class WebSecurity  {
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-
-//		JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-//		jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new ConvertJWT());
-		 http.mvcMatcher("/api/**")
-         .authorizeRequests()
-         .antMatchers("/article/**").hasAnyRole("USER")
-//         .mvcMatchers("/article/**")
-//         .access("hasAuthority('*')")
-        // .hasAuthority("SCOPE_openid")
-        // .hasAnyRole("USER")
-      //   .access("hasAuthority('SCOPE_articles.read')")
-         .and()
-         .oauth2ResourceServer()
-         .jwt();
-		 
-		    //    return http.build();
-		// .jwtAuthenticationConverter(jwtAuthenticationConverter);
-
-	}
-
+	@Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	 System.out.println("i am hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+	 JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new RoleConverter());
+        http.mvcMatcher("/api/**")
+          .authorizeRequests()
+          .mvcMatchers("/api/**")
+          .access("hasRole('ROLE_USER') or hasRole('ROLE_USER_OR_CLIENT') or hasRole('ROLE_CLIENT')")
+          .and()
+          .oauth2ResourceServer()
+          .jwt().jwtAuthenticationConverter(jwtAuthenticationConverter);
+        return http.build();
+    }
 }
