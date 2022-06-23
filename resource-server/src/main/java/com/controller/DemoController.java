@@ -41,9 +41,9 @@ public class DemoController {
 
 	}
 	
-	@GetMapping("/only")
-	@PreAuthorize("hasAuthority('SCOPE_openid')")
-	public String getClient(@AuthenticationPrincipal Jwt  jwt,@CurrentSecurityContext SecurityContext context) {
+	@GetMapping("/onlyUser")
+	@PreAuthorize("hasAnyRole('USER','USER_OR_CLIENT')")
+	public String onlyUser(@AuthenticationPrincipal Jwt  jwt,@CurrentSecurityContext SecurityContext context) {
 		context.getAuthentication().getAuthorities().forEach(auth->{
 			System.out.println("auth^^^^"+auth.getAuthority());
 		});
@@ -54,7 +54,24 @@ public class DemoController {
 			System.out.println("key is " + k + " value is " + v);
 		});
 		System.out.println("****id " + id + " scope is " + scope);
-		return "only client  & princliple "+jwt;
+		return "only user  & princliple "+jwt;
+
+	}
+	
+	@GetMapping("/onlyClient")
+	@PreAuthorize("hasRole('CLIENT')")
+	public String onlyClient(@AuthenticationPrincipal Jwt  jwt,@CurrentSecurityContext SecurityContext context) {
+		context.getAuthentication().getAuthorities().forEach(auth->{
+			System.out.println("auth^^^^"+auth.getAuthority());
+		});
+		String id = jwt.getSubject();
+		Object scope = jwt.getClaim("scope");
+		Map<String, Object> claims = jwt.getClaims();
+		claims.forEach((k, v) -> {
+			System.out.println("key is " + k + " value is " + v);
+		});
+		System.out.println("****id " + id + " scope is " + scope);
+		return "only Client  & princliple "+jwt;
 
 	}
 	

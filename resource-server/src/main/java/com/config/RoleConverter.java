@@ -20,42 +20,30 @@ public class RoleConverter implements Converter<Jwt, Collection<GrantedAuthority
     @Override
     public Collection<GrantedAuthority> convert(final Jwt jwt) {
     	
-    	System.out.println("#################!!!!"+jwt.getSubject());
-    	
-  
-    //    Map<String, Object> realmAccess = (Map<String, Object>) jwt.getClaims().get("scope");
-    	java.util.List<GrantedAuthority> authority = new ArrayList<GrantedAuthority>();
-    	
-    	Object realmAccess = jwt.getClaim("scope");
-    	System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    	Map<String, Object> claims = jwt.getClaims();
-		claims.forEach((k, v) -> {
-			System.out.println("key is " + k + " value is " + v);
-		});
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        if (realmAccess == null ) {
-        	
-        	/////////////////////////////////////////
-        	System.out.println("adding new role for user **********");
-        	
-        	GrantedAuthority grantAuthority = new UserGrantedAuthority("ROLE_USER");
-        	GrantedAuthority grantAuthority1 = new UserGrantedAuthority("ROLE_USER_OR_CLIENT");
-    		authority.add(grantAuthority);
-    		authority.add(grantAuthority1);
-        	///////////////////////////////////////////
-            return authority;
-        } 
-        System.out.println("adding client role ");
-        GrantedAuthority grantAuthority = new UserGrantedAuthority("ROLE_CLIENT");
-        
-		authority.add(grantAuthority);
+    	System.out.println("*****convertering roles*******");
 
-//        Collection<GrantedAuthority> returnValue = ((List<String>) realmAccess.get("roles"))
-//                .stream().map(roleName -> "ROLE_" + roleName)  
-//                .map(SimpleGrantedAuthority::new)
-//                .collect(Collectors.toList());
- 
-        return authority;
+		//////////////////////////////////////////////////////////////////////
+		java.util.List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		java.util.List<String> grantedAuthorityList = jwt.getClaim("authorities");
+
+		if (grantedAuthorityList.size() > 0) {
+			System.out.println("converting user authorities");
+			grantedAuthorityList.forEach(authority -> {
+				GrantedAuthority grantAuthority = new UserGrantedAuthority(authority);
+				authorities.add(grantAuthority);
+
+			});
+		} else {
+
+			if (jwt.getClaim("scope") != null) {
+				System.out.println("converting client authorities");
+				GrantedAuthority clientGrantAuthority = new UserGrantedAuthority("ROLE_CLIENT");
+				authorities.add(clientGrantAuthority);
+
+			}
+		}
+
+		return authorities;
     }
 
 }

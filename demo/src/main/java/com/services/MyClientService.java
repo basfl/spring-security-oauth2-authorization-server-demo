@@ -1,5 +1,6 @@
 package com.services;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,6 +36,7 @@ public class MyClientService implements RegisteredClientRepository {
 		// scope(OidcScopes.OPENID)
 
 		RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
+				.tokenSettings(tokenSetting->tokenSetting.accessTokenTimeToLive(Duration.ofHours(1)))
 				.clientId(client.get(0).getClientId()).clientSecret(client.get(0).getSecret())
 				.clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
