@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.core.Authentication;
@@ -32,7 +35,7 @@ import com.services.MyClientService;
 //import com.services.MyUserDetailsService;
 
 @Configuration
-@Import(OAuth2AuthorizationServerConfiguration.class)
+//@Import(OAuth2AuthorizationServerConfiguration.class)
 public class ProjectConfig {
 
 	@Autowired
@@ -42,13 +45,22 @@ public class ProjectConfig {
 	@Autowired
 	MyClientService myClientService;
 
-	@Bean
-	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-		http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated()).formLogin()
-				.loginPage("/login").permitAll();
+//	@Bean
+//	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+//		http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated()).formLogin(Customizer.withDefaults());
+//			//	.loginPage("/login").permitAll();
+//
+//		return http.build();
+//	}
+	
+	
+	 @Bean
+	    @Order(Ordered.HIGHEST_PRECEDENCE)
+	    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
+	        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 
-		return http.build();
-	}
+	        return http.formLogin(Customizer.withDefaults()).build();
+	    }
 
 	@Bean
 	public OAuth2TokenCustomizer<JwtEncodingContext>  tokenCustomizer(){
@@ -77,10 +89,11 @@ public class ProjectConfig {
 
 	@Bean
 	public ProviderSettings providerSettings() {
-		ProviderSettings ps = new ProviderSettings();
-		ps = ps.issuer("http://localhost:9000");
-		ps = ps.jwkSetEndpoint("/certs");
-		return ps;
+//		ProviderSettings ps = new ProviderSettings();
+//		ps = ps.issuer("http://localhost:9000");
+//		ps = ps.jwkSetEndpoint("/certs");
+//		return ps;
+		return ProviderSettings.builder().issuer("http://localhost:9000").build();
 	}
 
 	private RSAKey getKeyPair() {
