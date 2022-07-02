@@ -1,10 +1,13 @@
 package com.config;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+
+import com.filters.RequestResponseLoggingFilter;
 
 
 
@@ -28,4 +31,16 @@ public class WebSecurity  {
           .jwt().jwtAuthenticationConverter(jwtAuthenticationConverter);
         return http.build();
     }
+	
+	@Bean
+	public FilterRegistrationBean<RequestResponseLoggingFilter> loggingFilter(){
+	    FilterRegistrationBean<RequestResponseLoggingFilter> registrationBean 
+	      = new FilterRegistrationBean<>();
+	        
+	    registrationBean.setFilter(new RequestResponseLoggingFilter());
+	    registrationBean.addUrlPatterns("/api/*");
+	    registrationBean.setOrder(2);
+	        
+	    return registrationBean;    
+	}
 }
