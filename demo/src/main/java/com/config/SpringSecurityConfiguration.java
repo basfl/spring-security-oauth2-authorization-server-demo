@@ -3,6 +3,7 @@ package com.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,10 +30,21 @@ public class SpringSecurityConfiguration {
 
 	@Bean
 	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-		http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated()).formLogin()
+		http.authorizeRequests(authorizeRequests -> authorizeRequests
+				.antMatchers("/registration**",
+		                "/js/**",
+		                "/css/**",
+		                "/images/**").permitAll()
+				.anyRequest().authenticated()).formLogin()
 			.loginPage("/login").permitAll();
 
 		return http.build();
 	}
+	
+	 public void configure(WebSecurity web) throws Exception {
+         web
+                 .ignoring()
+                 .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**","/vendor/**","/fonts/**");
+     }
 	
 }

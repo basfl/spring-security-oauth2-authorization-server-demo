@@ -52,7 +52,7 @@ public class MyClientService implements RegisteredClientRepository {
 				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 				.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-				.redirectUri("http://127.0.0.1:8080/login/oauth2/code/users-client-oidc")
+			//	.redirectUri("http://127.0.0.1:8080/login/oauth2/code/users-client-oidc")
 				.redirectUri(client.get(0).getRedirect()).scope("openid").build();
 		//		.clientSettings(clientSettings -> clientSettings.requireUserConsent(true)).build();
 		return registeredClient;
