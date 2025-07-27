@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Start OAuth</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+	<title>custom login page !!!</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+</head>
+
+<body>
+ <div class="form-container">
+	<form th:action="@{/start}" method="get">
+		  <label>Client ID: <input type="text" name="client_id" required /></label><br />
+        <label>Redirect URI: <input type="text" name="redirect_uri" required /></label><br />
+        <label>Scope: <input type="text" name="scope" required /></label><br />
+        <input type="submit" value="Start Authorization" />
+	</form>
+</div>
+</body>
+
+</html>

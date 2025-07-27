@@ -23,12 +23,14 @@ body {
 	<p th:if="${loginError}" class="error">Wrong user or password</p>
 	<div th:if="${param.error}" class="alert alert-danger">Invalid
 		username and password.</div>
-
+	<div class="form-container">
 	<form th:action="@{/login}" method="post">
 		<label for="username">Username</label>: <input type="text"
 			id="username" name="username" autofocus="autofocus" /> <br /> <label
 			for="password">Password</label>: <input type="password" id="password"
-			name="password" /> <br /> <input type="submit" value="Log in" />
+			name="password" /> <br />
+			 <input type="submit" value="Log in" />
 	</form>
+	</div>
 </body>
 </html>

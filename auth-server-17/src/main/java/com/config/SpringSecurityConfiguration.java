@@ -20,7 +20,7 @@ public class SpringSecurityConfiguration {
 //		
 //	}
 	
-
+                   /////was ////////////
 	@Bean
 	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 		//http.authorizeRequests(authorizeRequests->authorizeRequests.an)
@@ -30,8 +30,11 @@ public class SpringSecurityConfiguration {
 		                "/js/**",
 		                "/css/**",
 		                "/images/**").permitAll()
-				.anyRequest().authenticated()).formLogin()
+				.anyRequest().authenticated()).httpBasic().disable()
+		.formLogin()
 			.loginPage("/login").permitAll();
+			
+		
 
 		return http.build();
 	}

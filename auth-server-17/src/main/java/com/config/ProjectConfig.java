@@ -11,12 +11,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
-//import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -25,7 +23,6 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
-//import org.springframework.security.oauth2.server.authorization.config.p;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
@@ -47,8 +44,6 @@ public class ProjectConfig {
 
 	@Autowired
 	UserRepository userRepository;
-//	@Autowired
-//	MyUserDetailsService myUserDetailsService;
 	@Autowired
 	MyClientService myClientService;
 
@@ -107,6 +102,7 @@ public class ProjectConfig {
 //
 //			return http.build();
 		 
+				 
 		 
 		 http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
 					.requestMatchers
@@ -114,12 +110,15 @@ public class ProjectConfig {
 			                "/js/**",
 			                "/css/**",
 			                "/images/**").permitAll()
-					.anyRequest().authenticated()).formLogin()
-				.loginPage("/login").permitAll();
+					.anyRequest().authenticated()).httpBasic().disable()
+		 .formLogin()
+				.loginPage("/login").defaultSuccessUrl("/hello", true)
+				.permitAll();
 
 			return http.build();
 		}
 
+	
 	@Bean
 	public OAuth2TokenCustomizer<JwtEncodingContext>  tokenCustomizer(){
 		
